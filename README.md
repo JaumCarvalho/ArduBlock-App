@@ -39,8 +39,8 @@ A metodologia consiste em envolver uma abordagem iterativa de desenvolvimento de
   - Desenvolver protótipos interativos e coletar feedback
 - ### Etapa 3: Desenvolvimento de Conteúdo e Funcionalidades (Abril - Setembro)
   - Desenvolver conteúdo educacional e implementar as funcionalidades principais
-- ### Etapa 4: 
-  - Realizar teste beta e coletar feedbac
+- ### Etapa 4: Testes Beta e Feedback (Outubro)
+  - Realizar teste beta e coletar feedback
   - Realizar iterações no aplicativo com base no feedback
 - ### Etapa 5: Polimento (e possível lançamento) (Novembro)
   - Corrigir problemas restantes
