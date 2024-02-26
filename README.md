@@ -7,12 +7,12 @@
 ### 5. [Resultados Esperados](#resultados-esperados)
 ## Resumo
 O projeto propõe o desenvolvimento de um aplicativo móvel destinado ao ensino de programação em Arduino utilizando uma linguagem visual de blocos. Com a crescente importância da programação e da eletrônica, é fundamental oferecer ferramentas educacionais acessíveis e envolventes que introduzam os alunos de diferentes níveis de escolaridade ao mundo da computação. Este aplicativo busca preencher essa lacuna, proporcionando uma abordagem prática e interativa para o aprendizado, por meio de uma interface intuitiva e atividades envolventes. Ao promover o pensamento computacional e a resolução de problemas, o aplicativo capacita os usuários com habilidades digitais essenciais, ao mesmo tempo em que inspira a criatividade e a inovação. Com foco no ensino de programação em Arduino, visa estimular o interesse dos alunos pela tecnologia e promover o desenvolvimento de habilidades STEM.
-<br>
+
 ## Descrição/Justificativa
 No contexto do ensino de programação em Arduino utilizando uma linguagem visual de blocos, percebe-se a falta de recursos específicos que proporcionem uma introdução acessível e envolvente aos usuários. A maioria das soluções disponíveis são complexas demais ou não abordam de forma específica a plataforma Arduino, amplamente utilizada em projetos educacionais de tecnologia.
 Assim, surge a necessidade de desenvolver um aplicativo móvel que ofereça uma solução educacional abrangente e eficaz para o ensino de programação em Arduino. Este aplicativo se destina a alunos interessados em aprender sobre eletrônica e programação desde uma idade precoce, utilizando uma abordagem prática e lúdica para promover o pensamento computacional e a resolução de problemas.
 A motivação para este projeto reside na importância de preparar os usuários para um futuro digitalizado e tecnológico, capacitando-os com habilidades essenciais para a era digital.
-<br>
+
 ## Objetivos
 O projeto tem como objetivo principal desenvolver um aplicativo móvel que ofereça uma introdução eficaz à programação em Arduino por meio de uma linguagem visual de blocos.
 A intenção é proporcionar aos usuários uma ferramenta educacional acessível e estimulante, que os motive a explorar os conceitos de programação e eletrônica usando o Arduino. Isso garantirá uma experiência de aprendizado interativa e cativante, incentivando a experimentação e a descoberta.
@@ -20,7 +20,7 @@ Para isso, será desenvolvida uma interface de usuário intuitiva e acessível, 
 Além disso, o aplicativo oferecerá uma variedade de recursos educacionais, incluindo atividades práticas, tutoriais passo a passo e desafios criativos. Esses recursos serão elaborados para abordar os conceitos fundamentais de programação em Arduino de forma envolvente e estimulante.
 O foco estará em promover o aprendizado ativo e a resolução de problemas, desenvolvendo o pensamento computacional e incentivando os usuários a aplicar seus conhecimentos em situações do mundo real. Isso permitirá que eles desenvolvam habilidades práticas e enfrentem desafios complexos com confiança.
 Por fim, o projeto incluirá uma fase de teste e refinamento, durante a qual o aplicativo será submetido à avaliação de estudantes e educadores. O feedback recebido será utilizado para identificar áreas de melhoria e realizar ajustes no aplicativo, garantindo que ele atenda efetivamente às necessidades e expectativas do público-alvo. Essa colaboração entre desenvolvedor, estudantes e educadores será fundamental para garantir que o aplicativo seja bem-sucedido e tenha um impacto positivo.
-<br>
+
 ## Metodologia/Cronograma
 A metodologia consiste em envolver uma abordagem iterativa de desenvolvimento de software, pesquisando o mercado, combinando design centrado no usuário para melhor atendê-lo em experiência e usabilidade, e técnicas ágeis de desenvolvimento. O cronograma será dividido nas seguintes fases (podem ser modificadas, atrasadas ou adiantadas, depende da necessidade):
 
@@ -152,7 +152,7 @@ A metodologia consiste em envolver uma abordagem iterativa de desenvolvimento de
     <td>●</td>
   </tr>
 </table>
-<br>
+
 ## Resultados Esperados
 Em primeiro lugar, espera-se que a pesquisa realizada sobre as lacunas no ensino e as necessidades específicas na área do conhecimento proporcione insights valiosos que orientem o desenvolvimento do aplicativo. Isso garantirá que o aplicativo seja cuidadosamente adaptado para abordar os desafios e demandas reais enfrentados pelos alunos e educadores nesse domínio.
 Em termos de design e desenvolvimento, espera-se que a interface de usuário projetada seja intuitiva, acessível e atrativa para os alunos. O sucesso neste aspecto será refletido na facilidade de navegação do aplicativo e na sua capacidade de proporcionar uma experiência de usuário agradável e sem complicações.
