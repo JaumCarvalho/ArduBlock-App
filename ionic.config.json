@@ -1,0 +1,7 @@
+{
+  "name": "ardublock-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
