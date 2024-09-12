@@ -14,7 +14,7 @@ export class IndexedDBservice{
     this.openDB();
   }
 
-  // Função para abri o IndexedDB
+  // Função para abrir o IndexedDB
   private openDB(): void {
 
     const request = indexedDB.open('ImageDataBase', 1);
