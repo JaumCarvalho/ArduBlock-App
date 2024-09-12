@@ -20,6 +20,7 @@ export class OrientationWarningComponent implements OnInit {
   }
 
   private checkOrientation() {
+    
     const isMobile = this.isMobileDevice();
     const isLandscape = window.matchMedia("(orientation: landscape)").matches;
 
@@ -31,6 +32,6 @@ export class OrientationWarningComponent implements OnInit {
   }
 
   private isMobileDevice(): boolean {
-    return window.innerWidth <= 768; // Ajuste conforme necessário
+    return window.innerWidth <= 768;
   }
 }

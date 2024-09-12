@@ -18,10 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'arduino-component-details',
-    loadChildren: () => import('./pages/arduino-component-details/arduino-component-details.module').then( m => m.ArduinoComponentDetailsPageModule)
+    loadChildren: () => import('./pages/arduino-component-details/arduino-component-details.module').then(m => m.ArduinoComponentDetailsPageModule)
   }
 ];
-
 
 @NgModule({
   imports: [
