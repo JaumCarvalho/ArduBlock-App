@@ -4,9 +4,7 @@ import { ArduinoComponentsPage } from './pages/arduino-components/arduino-compon
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'folder/Executar',
-    pathMatch: 'full'
+    path: '', redirectTo: 'folder/Executar', pathMatch: 'full'
   },
   {
     path: 'folder/:id',
@@ -17,9 +15,10 @@ const routes: Routes = [
     component: ArduinoComponentsPage
   },
   {
-    path: 'arduino-component-details',
-    loadChildren: () => import('./pages/arduino-component-details/arduino-component-details.module').then(m => m.ArduinoComponentDetailsPageModule)
+    path: 'programming',
+    loadChildren: () => import('./pages/programming/programming.module').then( m => m.ProgrammingPageModule)
   }
+
 ];
 
 @NgModule({

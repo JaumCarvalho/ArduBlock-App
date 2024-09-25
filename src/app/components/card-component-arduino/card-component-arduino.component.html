@@ -1,10 +1,21 @@
 <ion-grid>
   <ion-row>
-    <ion-card *ngFor="let image of images" (click)="addComponentToWorkspace()">
-      <img [src]="image" (error)="handleImageError($event)" alt="Image" />
-
+    <ion-card (click)="addComponentToWorkspace()">
+      <img alt="led" src="../../../assets/arduino-components/led.png" />
       <ion-card-header>
-        <ion-card-title class="ion-text-center">Title</ion-card-title>
+        <ion-card-title class="ion-text-center">Led</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="addComponentToWorkspace()">
+      <img alt="led" src="../../../assets/arduino-components/potenciometro.png" />
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Potenciometro</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-card (click)="addComponentToWorkspace()">
+      <img alt="led" src="../../../assets/arduino-components/resistor.png" />
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Resistor</ion-card-title>
       </ion-card-header>
     </ion-card>
   </ion-row>

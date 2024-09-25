@@ -14,21 +14,25 @@ export class CardComponentArduinoComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
+      // Aguardar a abertura do banco de dados antes de qualquer operação
+      await this.indexedDBService.openDB();
+  
       const imagePaths = [
-        '../../assets/arduino-components/led.png',
-        '../../assets/arduino-components/potenciometro.png',
-        '../../assets/arduino-components/resistor.png'
+        '../../../assets/arduino-components/led.png',
+        '../../../assets/arduino-components/potenciometro.png',
+        '../../../assets/arduino-components/resistor.png'
       ];
-
+  
       // Carregar as imagens da pasta assets para o IndexedDB
       this.indexedDBService.loadImagesFromAssets(imagePaths);
-
+  
       // Agora, carregar as imagens do IndexedDB para exibição
       await this.loadImagesFromDB();
     } catch (error) {
       console.error('Erro ao inicializar componente:', error);
     }
   }
+  
 
   async loadImagesFromDB(): Promise<void> {
     try {

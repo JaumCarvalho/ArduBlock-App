@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public appPages = [
     { title: 'Executar', url: '/folder/Executar', icon: 'play' },
-    { title: 'Componentes do Arduino', url: '/folder/arduino-components', icon: 'hardware-chip' },
-    { title: 'Programação', url: '/folder/Programação', icon: 'extension-puzzle' }
+    { title: 'Componentes do Arduino', url: '/arduino-components', icon: 'hardware-chip' },
+    { title: 'Programação', url: '/programming', icon: 'extension-puzzle' }
   ];  
   constructor() {}
 }

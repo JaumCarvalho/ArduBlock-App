@@ -15,29 +15,30 @@ export class IndexedDBservice{
   }
 
   // Função para abrir o IndexedDB
-  private openDB(): void {
-
-    const request = indexedDB.open('ImageDataBase', 1);
-
-    // Requisição para armazenar uma nova imagem em um objeto com autoincrement ID
-    request.onupgradeneeded = (event: any) => {
-      this.db = event.target.result;
-      if (!this.db?.objectStoreNames.contains('images')){
-        this.db?.createObjectStore('images', {keyPath: 'id', autoIncrement: true});
-      }
-    };
-
-    // Em caso de sucesso retornar o resultado
-    request.onsuccess = (event: any) => {
-      this.db = event.target.result;
-      console.log('Bando de dados IndexedDB aberto com sucesso');
-    };
-
-    // Em caso de erro retornar um error
-    request.onerror = (event: any) => {
-      console.error('Erro ao abri o banco de dados IndexedDB', event);
-    }
+  public openDB(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('ImageDataBase', 1);
+  
+      request.onupgradeneeded = (event: any) => {
+        this.db = event.target.result;
+        if (!this.db?.objectStoreNames.contains('images')) {
+          this.db?.createObjectStore('images', { keyPath: 'id', autoIncrement: true });
+        }
+      };
+  
+      request.onsuccess = (event: any) => {
+        this.db = event.target.result;
+        console.log('Banco de dados IndexedDB aberto com sucesso');
+        resolve();
+      };
+  
+      request.onerror = (event: any) => {
+        console.error('Erro ao abrir o banco de dados IndexedDB', event);
+        reject(event);
+      };
+    });
   }
+  
 
   // Função para adicionar imagem
   addImage(image: File): Promise<void>{
@@ -64,6 +65,7 @@ export class IndexedDBservice{
   
       request.onsuccess = (event) => {
         const result = (event.target as IDBRequest).result;
+        console.log('Resultado do IndexedDB:', result);
         const images = result.map((item: { id: number; image: Blob }) => ({
           id: item.id,
           url: URL.createObjectURL(item.image),
