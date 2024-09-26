@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
 import 'blockly/javascript';
+import{ PersistenceDbService } from '../../core/services/persistence_idb.service'
 
 Blockly.Blocks['led_on'] = {
   init: function() {
@@ -146,6 +147,45 @@ Blockly.Blocks['loop_block'] = {
 
 export class ProgrammingPage implements AfterViewInit{
   workspace!: Blockly.WorkspaceSvg;
+
+  constructor(private persistenceDbService: PersistenceDbService) {}
+
+  ionViewDidEnter() {
+    this.loadWorkspace().then(() => {
+      if (this.workspace) {
+        setTimeout(() => {
+          this.workspace.resize();
+        }, 100);
+      }
+    });
+  }
+
+  saveWorkspace() {
+    const xml = Blockly.Xml.workspaceToDom(this.workspace);
+    const xmlText = Blockly.Xml.domToText(xml);
+    this.persistenceDbService.saveWorkspace(xmlText).then(() => {
+      console.log('Workspace salvo com sucesso!');
+    });
+  }
+
+  loadWorkspace(): Promise<void> {
+    return this.persistenceDbService.loadWorkspace().then((xmlText) => {
+      console.log('Dados carregados:', xmlText); // Log para verificar os dados
+      if (xmlText) {
+        try {
+          const xml = Blockly.utils.xml.textToDom(xmlText);
+          Blockly.Xml.domToWorkspace(xml, this.workspace);
+        } catch (error) {
+          console.error('Erro ao converter texto para DOM:', error); // Log de erro
+        }
+      } else {
+        console.log('Nenhum workspace encontrado.');
+      }
+    });
+  }
+  
+  
+
   ngAfterViewInit(): void {
     const blocklyDiv = document.getElementById('blocklyDiv')!;
     const workspaceConfig: Blockly.BlocklyOptions = {

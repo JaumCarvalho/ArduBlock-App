@@ -4,6 +4,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Programação</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveWorkspace()">Salvar</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -14,6 +17,5 @@
     </ion-toolbar>
   </ion-header>
 
-    <div id="blocklyDiv" style="height: 304px; width: 740px;"></div>
-
+  <div id="blocklyDiv" style="height: 304px; width: 740px;"></div>
 </ion-content>
