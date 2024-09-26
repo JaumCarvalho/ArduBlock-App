@@ -63,7 +63,9 @@ Para rodar o aplicativo no Android Studio, siga os passos abaixo:
    ```
 
 3. **Abra o Projeto no Android Studio**:
-   Abra o Android Studio e selecione **Open an Existing Project**. Navegue até o diretório `android` dentro do seu projeto Ionic e selecione-o.
+   ```bash
+   ionic capacitor open android
+   ```
 
 4. **Configure o Dispositivo de Execução**:
    Conecte um dispositivo Android ao seu computador ou inicie um emulador Android no Android Studio.
