@@ -81,16 +81,6 @@ Para rodar o aplicativo no Android Studio, siga os passos abaixo:
   - **assets/**: Armazena arquivos estáticos, como imagens e estilos.
   - **environments/**: Configurações de ambiente para desenvolvimento e produção.
 
-## Contribuição
-
-Se você deseja contribuir com este projeto, siga os passos abaixo:
-
-1. Fork este repositório.
-2. Crie uma nova branch para sua feature: `git checkout -b minha-feature`.
-3. Faça suas alterações e commit: `git commit -m 'Adicionando uma nova feature'`.
-4. Push para a branch: `git push origin minha-feature`.
-5. Abra um Pull Request.
-
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
@@ -101,5 +91,3 @@ Para dúvidas ou sugestões, entre em contato:
 
 - Nome: João Carvalho
 - E-mail: contatojaumcarvalho@gmail.com
-
-## Agradecimentos
