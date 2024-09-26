@@ -81,10 +81,6 @@ Para rodar o aplicativo no Android Studio, siga os passos abaixo:
   - **assets/**: Armazena arquivos estáticos, como imagens e estilos.
   - **environments/**: Configurações de ambiente para desenvolvimento e produção.
 
-## Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
-
 ## Contato
 
 Para dúvidas ou sugestões, entre em contato:
