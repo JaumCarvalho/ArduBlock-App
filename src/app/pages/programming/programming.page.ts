@@ -117,10 +117,11 @@ Blockly.Blocks['temperature_read'] = {
 Blockly.Blocks['setup_block'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Setup");
-    this.setNextStatement(true, null);
+        .appendField("setup");
+    this.appendStatementInput("SETUP_CONTENT")
+        .setCheck(null)
     this.setColour(290);
-    this.setTooltip("Bloco inicial de setup para configurar pinos e variáveis.");
+    this.setTooltip("Bloco para configurar o Arduino.");
     this.setHelpUrl("");
   }
 };
@@ -128,10 +129,11 @@ Blockly.Blocks['setup_block'] = {
 Blockly.Blocks['loop_block'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Loop");
-    this.setPreviousStatement(true, null);
+        .appendField("loop");
+    this.appendStatementInput("LOOP_CONTENT")
+        .setCheck(null)
     this.setColour(290);
-    this.setTooltip("Bloco de loop que será executado repetidamente.");
+    this.setTooltip("Bloco que executa repetidamente.");
     this.setHelpUrl("");
   }
 };
