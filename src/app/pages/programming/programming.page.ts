@@ -2,7 +2,10 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
 import 'blockly/javascript';
+import * as BlocklyMessages from 'blockly/msg/pt-br';
+
 import{ PersistenceDbService } from '../../core/services/persistence_idb.service'
+Blockly.setLocale(BlocklyMessages);
 
 Blockly.Blocks['led_on'] = {
   init: function() {
@@ -138,6 +141,7 @@ Blockly.Blocks['loop_block'] = {
     this.setHelpUrl("");
   }
 };
+
 
 @Component({
   selector: 'app-programming',
