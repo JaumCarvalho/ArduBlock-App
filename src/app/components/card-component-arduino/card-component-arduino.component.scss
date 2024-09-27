@@ -10,11 +10,13 @@ ion-card-title{
   font-size: 10px;
 }
 
-ion-row{
-  margin-left: 4%;
-}
-
 img{
   width: 70px;
   height: 70px;
+}
+
+ion-grid{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
