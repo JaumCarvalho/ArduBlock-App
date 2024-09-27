@@ -15,6 +15,6 @@
   </ion-header>
 
   <div id="container">
-    <app-card-component-arduino></app-card-component-arduino>
+    <app-card-component-arduino (componentAdded)="onComponentAdded($event)"></app-card-component-arduino>
   </div>
 </ion-content>

@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicComponent } from 'src/app/components/dynamic-component/dynamic-component.component';
+import { LedService } from '../../components/led/led.service'; // Importar o LedService
+import { WorkspaceService } from '../../core/services/workspace_idb.service'; // Importar o WorkspaceService
 
 @Component({
   selector: 'app-folder',
@@ -19,7 +21,9 @@ export class FolderPage implements OnInit, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ledService: LedService, // Injeção do LedService
+    private workspaceService: WorkspaceService // Injeção do WorkspaceService
   ) {}
 
   ngOnInit() {
@@ -63,10 +67,32 @@ export class FolderPage implements OnInit, AfterViewInit {
     }
   }
 
+  // Método para adicionar um componente à área de execução
   addComponent(componentData: any) {
     this.components.push(componentData);
-    // Aqui você pode chamar seu serviço para persistir os dados no IndexedDB
+    this.workspaceService.saveComponent(componentData); // Persistir o componente no IndexedDB
     this.cdr.detectChanges();
+  }
+
+  // Método para controlar LEDs na execução
+  executeProject() {
+    console.log('Executando projeto...');
+    this.components.forEach(component => {
+      if (component.type === 'LED') {
+        this.ledService.turnOn(component.pin); // Ligar o LED
+      }
+      // Adicionar lógica para outros componentes, se necessário
+    });
+  }
+
+  stopProject() {
+    console.log('Projeto parado.');
+    this.components.forEach(component => {
+      if (component.type === 'LED') {
+        this.ledService.turnOff(component.pin); // Desligar o LED
+      }
+      // Adicionar lógica para parar outros componentes, se necessário
+    });
   }
 
   toggleExecution() {
@@ -76,15 +102,5 @@ export class FolderPage implements OnInit, AfterViewInit {
     } else {
       this.stopProject();
     }
-  }
-
-  executeProject() {
-    console.log('Executando projeto...');
-    // Lógica para executar o projeto
-  }
-
-  stopProject() {
-    console.log('Projeto parado.');
-    // Lógica para parar o projeto
   }
 }
