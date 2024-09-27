@@ -7,10 +7,12 @@ import { DynamicComponent } from 'src/app/components/dynamic-component/dynamic-c
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
 })
-export class FolderPage implements OnInit, AfterViewInit{
+export class FolderPage implements OnInit, AfterViewInit {
   public folder: string | null = null;
   item: string | null = null;
   private componentRef?: ComponentRef<DynamicComponent>;
+  public components: any[] = [];
+  isExecuting = false;
 
   @ViewChild('dynamicContainer', { read: ViewContainerRef, static: false }) container!: ViewContainerRef;
 
@@ -59,5 +61,30 @@ export class FolderPage implements OnInit, AfterViewInit{
       console.log('Componente destruído');
       this.componentRef.destroy();
     }
+  }
+
+  addComponent(componentData: any) {
+    this.components.push(componentData);
+    // Aqui você pode chamar seu serviço para persistir os dados no IndexedDB
+    this.cdr.detectChanges();
+  }
+
+  toggleExecution() {
+    this.isExecuting = !this.isExecuting;
+    if (this.isExecuting) {
+      this.executeProject();
+    } else {
+      this.stopProject();
+    }
+  }
+
+  executeProject() {
+    console.log('Executando projeto...');
+    // Lógica para executar o projeto
+  }
+
+  stopProject() {
+    console.log('Projeto parado.');
+    // Lógica para parar o projeto
   }
 }

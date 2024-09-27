@@ -4,6 +4,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ folder }}</ion-title>
+    <ion-button slot="end" (click)="toggleExecution()">
+      {{ isExecuting ? 'Parar' : 'Executar' }}
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
