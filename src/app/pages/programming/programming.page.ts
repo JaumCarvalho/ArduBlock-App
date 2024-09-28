@@ -4,7 +4,6 @@ import 'blockly/blocks';
 import * as BlocklyMessages from 'blockly/msg/pt-br';
 
 import { PersistenceDbService } from '../../core/services/persistence_idb.service';
-import { workspaceToCode } from 'blockly/javascript';
 Blockly.setLocale(BlocklyMessages);
 
 Blockly.Blocks['led_on'] = {
