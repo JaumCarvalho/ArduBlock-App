@@ -25,7 +25,7 @@ export class LedService {
 
   // Simula o envio de comando para o Arduino
   private sendCommand(pin: number, command: string): void {
-    // Aqui você pode implementar a lógica de comunicação com o Arduino
+    // Implementar a lógica de comunicação com o Arduino
     // Por exemplo, enviar um comando via Web Serial API
     console.log(`Comando enviado para o Arduino: ${command} no pino ${pin}`);
   }

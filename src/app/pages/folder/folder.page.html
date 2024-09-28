@@ -4,6 +4,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ folder }}</ion-title>
+    <ion-text slot="end" *ngIf="isExecuting">
+     <h6>Tempo do simulador  {{formatTime(hours) }}:{{formatTime(minutes) }}:{{ formatTime(seconds) }}</h6>
+    </ion-text>
     <ion-button slot="end" (click)="toggleExecution()">
       {{ isExecuting ? 'Parar' : 'Executar' }}
     </ion-button>

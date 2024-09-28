@@ -15,7 +15,11 @@ export class FolderPage implements OnInit, AfterViewInit {
   private componentRef?: ComponentRef<DynamicComponent>;
   public components: any[] = [];
   isExecuting = false;
-
+  timer: any;
+  hours: number = 0;
+  minutes: number = 0;
+  seconds: number = 0;
+  
   @ViewChild('dynamicContainer', { read: ViewContainerRef, static: false }) container!: ViewContainerRef;
 
   constructor(
@@ -99,8 +103,40 @@ export class FolderPage implements OnInit, AfterViewInit {
     this.isExecuting = !this.isExecuting;
     if (this.isExecuting) {
       this.executeProject();
+      this.startTimer();
     } else {
       this.stopProject();
+      this.stopTimer();
     }
+  }
+
+  formatTime(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  startTimer() {
+    this.resetTimer();
+    this.timer = setInterval(() => {
+      this.seconds++;
+      if (this.seconds >= 60) {
+        this.seconds = 0;
+        this.minutes++;
+      }
+      if (this.minutes >= 60) {
+        this.minutes = 0;
+        this.hours++;
+      }
+      this.cdr.detectChanges();
+    }, 1000);
+  }
+
+  stopTimer() {
+    clearInterval(this.timer);
+  }
+
+  resetTimer() {
+    this.hours = 0;
+    this.minutes = 0;
+    this.seconds = 0;
   }
 }
