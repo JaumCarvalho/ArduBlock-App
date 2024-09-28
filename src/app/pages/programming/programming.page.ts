@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
-import 'blockly/javascript';
 import * as BlocklyMessages from 'blockly/msg/pt-br';
 
 import { PersistenceDbService } from '../../core/services/persistence_idb.service';
+import { workspaceToCode } from 'blockly/javascript';
 Blockly.setLocale(BlocklyMessages);
 
 Blockly.Blocks['led_on'] = {
@@ -133,6 +133,7 @@ Blockly.Blocks['loop_block'] = {
   },
 };
 
+
 @Component({
   selector: 'app-programming',
   templateUrl: './programming.page.html',
@@ -140,9 +141,18 @@ Blockly.Blocks['loop_block'] = {
 })
 export class ProgrammingPage implements AfterViewInit {
   workspace!: Blockly.WorkspaceSvg;
+  generatedCode: string = '';
 
   constructor(private persistenceDbService: PersistenceDbService) {}
 
+  generateCode() {
+    const generator = new Blockly.Generator('JavaScript');
+    const workspace = Blockly.getMainWorkspace();
+    this.generatedCode = generator.workspaceToCode(workspace);
+    console.log(this.generatedCode);
+  }
+
+  
   ionViewDidEnter() {
     this.loadWorkspace().then(() => {
       if (this.workspace) {
@@ -157,6 +167,7 @@ export class ProgrammingPage implements AfterViewInit {
     this.persistenceDbService.saveWorkspace(xmlText).then(() => {
       console.log('Workspace salvo com sucesso!');
     });
+    this.generateCode();
   }
 
   async loadWorkspace(): Promise<void> {
