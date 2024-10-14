@@ -36,6 +36,14 @@ Instale as dependências do projeto com o comando:
 npm install
 ```
 
+## Instalando o CLI
+
+Instale o CLI do Ionic globalmente utilizando o comando:
+
+```bash
+npm install -g @ionic/cli 
+```
+
 ## Executando o Aplicativo
 
 Inicie o servidor de desenvolvimento:
