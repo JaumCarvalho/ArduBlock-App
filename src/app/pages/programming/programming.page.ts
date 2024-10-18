@@ -229,7 +229,6 @@ export class ProgrammingPage implements AfterViewInit {
           colour: '#5C81A6',
           contents: [
             { kind: 'block', type: 'setup_block' },
-            { kind: 'block', type: 'test_block' },
             { kind: 'block', type: 'loop_block' },
             { kind: 'block', type: 'controls_if' },
             { kind: 'block', type: 'controls_repeat_ext' },
