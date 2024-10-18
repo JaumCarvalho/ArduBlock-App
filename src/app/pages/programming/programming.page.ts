@@ -2,8 +2,8 @@ import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
 import * as BlocklyMessages from 'blockly/msg/pt-br';
-
 import { PersistenceDbService } from '../../core/services/persistence_idb.service';
+//nem trisca aqui nesse "erro"
 Blockly.setLocale(BlocklyMessages);
 
 Blockly.Blocks['led_on'] = {
@@ -114,11 +114,11 @@ Blockly.Blocks['temperature_read'] = {
 
 Blockly.Blocks['setup_block'] = {
   init: function () {
-    this.appendDummyInput().appendField('setup');
-    this.appendStatementInput('SETUP_CONTENT').setCheck(null);
+    this.appendDummyInput().appendField("setup");
+    this.appendStatementInput("SETUP_CONTENT").setCheck(null);
     this.setColour(290);
-    this.setTooltip('Bloco para configurar o Arduino.');
-    this.setHelpUrl('');
+    this.setTooltip("Bloco para configurar o Arduino.");
+    this.setHelpUrl("");
   },
 };
 
@@ -132,7 +132,6 @@ Blockly.Blocks['loop_block'] = {
   },
 };
 
-
 @Component({
   selector: 'app-programming',
   templateUrl: './programming.page.html',
@@ -141,16 +140,9 @@ Blockly.Blocks['loop_block'] = {
 export class ProgrammingPage implements AfterViewInit {
   workspace!: Blockly.WorkspaceSvg;
   generatedCode: string = '';
+  pageTitle: string = 'Programação';
 
   constructor(private persistenceDbService: PersistenceDbService) {}
-
-  generateCode() {
-    const generator = new Blockly.Generator('JavaScript');
-    const workspace = Blockly.getMainWorkspace();
-    this.generatedCode = generator.workspaceToCode(workspace);
-    console.log(this.generatedCode);
-  }
-
   
   ionViewDidEnter() {
     this.loadWorkspace().then(() => {
@@ -160,29 +152,42 @@ export class ProgrammingPage implements AfterViewInit {
     });
   }
 
+  onWorkspaceChange(){
+    this.pageTitle = "Programação *"
+  }
+
   saveWorkspace() {
     const xml = Blockly.Xml.workspaceToDom(this.workspace);
     const xmlText = Blockly.Xml.domToText(xml);
     this.persistenceDbService.saveWorkspace(xmlText).then(() => {
       console.log('Workspace salvo com sucesso!');
     });
-    this.generateCode();
+    /*
+    pegar conteúdo literal dos blocos e depois transpilar pra typescript
+    para sincronizar com os dados da área de execução com o código do conteúdo
+    gerado, como se fosse uma linguagem de programação
+    */
+    
+    console.log(""+this.workspace.getAllBlocks());
+
+    // retorna o conteúdo dos blocos separados por vírgula em formato de string
+    this.pageTitle = "Programação";
   }
 
   async loadWorkspace(): Promise<void> {
     const xmlText = await this.persistenceDbService.loadWorkspace();
-    console.log('Dados carregados:', xmlText); // Log para verificar os dados
     if (xmlText) {
-      try {
-        const xml = Blockly.utils.xml.textToDom(xmlText);
-        Blockly.Xml.domToWorkspace(xml, this.workspace);
-      } catch (error) {
-        console.error('Erro ao converter texto para DOM:', error); // Log de erro
-      }
+        try {
+            const xml = Blockly.utils.xml.textToDom(xmlText);
+            Blockly.Xml.domToWorkspace(xml, this.workspace);
+            console.log('Blocks in workspace after loading:', this.workspace.getAllBlocks());
+        } catch (error) {
+            console.error('Erro ao converter texto para DOM:', error);
+        }
     } else {
-      console.log('Nenhum workspace encontrado.');
+        console.log('Nenhum workspace encontrado.');
     }
-  }
+}
 
   ngAfterViewInit(): void {
     const blocklyDiv = document.getElementById('blocklyDiv');
@@ -201,7 +206,9 @@ export class ProgrammingPage implements AfterViewInit {
     } else {
       console.error('Elemento blocklyDiv não encontrado.');
     }
+    this.workspace.addChangeListener(this.onWorkspaceChange.bind(this));
   }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     Blockly.svgResize(this.workspace);
@@ -222,6 +229,7 @@ export class ProgrammingPage implements AfterViewInit {
           colour: '#5C81A6',
           contents: [
             { kind: 'block', type: 'setup_block' },
+            { kind: 'block', type: 'test_block' },
             { kind: 'block', type: 'loop_block' },
             { kind: 'block', type: 'controls_if' },
             { kind: 'block', type: 'controls_repeat_ext' },
