@@ -20,13 +20,13 @@ export class PersistenceDbService {
   async saveWorkspace(xmlText: string) {
     const db = await this.dbPromise;
     await db.put('workspace', { id: 'currentWorkspace', xml: xmlText });
-    console.log('Workspace salvo com sucesso!');
+    //console.log('Workspace salvo com sucesso!');
   }
 
   async loadWorkspace(): Promise<string | null> {
     const db = await this.dbPromise;
     const data = await db.get('workspace', 'currentWorkspace');
-    console.log('Workspace carregado:', data);
+    //console.log('Workspace carregado:', data);
     return data ? data.xml : null;
   }
 }

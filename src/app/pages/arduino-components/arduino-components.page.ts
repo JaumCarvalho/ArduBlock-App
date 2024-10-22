@@ -10,7 +10,7 @@ export class ArduinoComponentsPage {
 
   onComponentAdded(componentName: string) {
     if (componentName === 'LED') {
-      this.ledService.addLed(2); // Adiciona LED no pino 2 (ou outro pino dependendo escolha)
+      this.ledService.addLed(2);
     }
   }
 }
