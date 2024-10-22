@@ -23,7 +23,7 @@ export class ProgrammingPage implements AfterViewInit {
 
   constructor(
     private persistenceDbService: PersistenceDbService,
-    private transpilerService: TranspilerService // Injetar o serviço
+    private transpilerService: TranspilerService
   ) {}
 
   ionViewDidEnter() {
@@ -44,7 +44,7 @@ export class ProgrammingPage implements AfterViewInit {
     let generatedCode = '';
 
     blocks.forEach((block) => {
-      generatedCode += this.transpilerService.transpileBlock(block); // Usar o serviço
+      generatedCode += this.transpilerService.transpileBlock(block);
     });
 
     console.log('Código TypeScript gerado:', generatedCode);
