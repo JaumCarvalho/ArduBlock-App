@@ -39,15 +39,13 @@ export class TranspilerService {
   }
 
   private transpileLedOn(block: Blockly.Block): string {
-    if (typeof CustomLang['led_on'] === 'function') {
-      return CustomLang['led_on'](block);
-    }
-    return '// Função led_on não está definida\n';
+    const pinOn = block.getFieldValue('PIN');
+    return pinOn ? `digitalWrite(${pinOn}, HIGH);\n` : '';
   }
 
   private transpileLedOff(block: Blockly.Block): string {
     const pinOff = block.getFieldValue('PIN');
-    return pinOff ? `digitalWrite(${pinOff}, LOW); // Desliga o LED no pino ${pinOff}\n` : '';
+    return pinOff ? `digitalWrite(${pinOff}, LOW);\n` : '';
   }
 
   private transpileIf(block: Blockly.Block): string {

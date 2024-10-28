@@ -1,17 +1,13 @@
 import * as Blockly from 'blockly';
 interface CustomGenerator {
   statementToCode?: (block: Blockly.Block, name: string) => string;
-  valueToCode?: (
-    block: Blockly.Block,
-    name: string,
-    precedence: number
-  ) => string;
+  valueToCode?: (block: Blockly.Block, name: string, precedence: number) => string;
   PRECEDENCE?: {
     NONE: number;
-    LOW: number;
-    MEDIUM: number;
+    LOW: number;    
+    MEDIUM: number;  
     HIGH: number;
-    HIGHEST: number;
+    HIGHEST: number;  
   };
   setup_block?: (block: Blockly.Block) => string;
   led_on?: (block: Blockly.Block) => string;
@@ -25,11 +21,9 @@ interface CustomGenerator {
   controls_if?: (block: Blockly.Block) => string;
 }
 
-const CustomLang: CustomGenerator = new Blockly.Generator(
-  'CustomLang'
-) as unknown as CustomGenerator;
+const CustomLang: CustomGenerator = new Blockly.Generator('CustomLang') as unknown as CustomGenerator;
 
-CustomLang.PRECEDENCE = {
+CustomLang.PRECEDENCE = {  
   NONE: 0,
   LOW: 1,
   MEDIUM: 2,
@@ -37,58 +31,50 @@ CustomLang.PRECEDENCE = {
   HIGHEST: 4,
 };
 
-CustomLang['setup_block'] = function (block: Blockly.Block) {
-  const statements = CustomLang.statementToCode
-    ? CustomLang.statementToCode(block, 'SETUP_CONTENT')
-    : '';
+CustomLang['setup_block'] = function(block) {
+  const statements = CustomLang.statementToCode ? CustomLang.statementToCode(block, 'SETUP_CONTENT') : '';
   return `function setup() {\n${statements}}\n`;
 };
 
-CustomLang['led_on'] = function (block: Blockly.Block) {
+CustomLang['led_on'] = function(block) {
   const pin = block.getFieldValue('PIN');
   return `digitalWrite(${pin}, HIGH);\n`;
 };
 
-CustomLang['led_off'] = function (block: Blockly.Block) {
+CustomLang['led_off'] = function(block) {
   const pin = block.getFieldValue('PIN');
   return `digitalWrite(${pin}, LOW);\n`;
 };
 
-CustomLang['controls_wait'] = function (block: Blockly.Block) {
-  const time = CustomLang.valueToCode
-    ? CustomLang.valueToCode(block, 'TIME', CustomLang.PRECEDENCE?.LOW || 0)
-    : '0';
+CustomLang['controls_wait'] = function(block) {
+  const time = CustomLang.valueToCode ? CustomLang.valueToCode(block, 'TIME', CustomLang.PRECEDENCE?.LOW || 0) : '0';
   return `delay(${time});\n`;
 };
 
-CustomLang['controls_repeat_ext'] = function (block: Blockly.Block) {
-  const times = CustomLang.valueToCode
-    ? CustomLang.valueToCode(block, 'TIMES', CustomLang.PRECEDENCE?.LOW || 0)
-    : '0';
-  const statements = CustomLang.statementToCode
-    ? CustomLang.statementToCode(block, 'DO')
-    : '';
+CustomLang['controls_repeat_ext'] = function(block) {
+  const times = CustomLang.valueToCode ? CustomLang.valueToCode(block, 'TIMES', CustomLang.PRECEDENCE?.LOW || 0) : '0';
+  const statements = CustomLang.statementToCode ? CustomLang.statementToCode(block, 'DO') : '';
   return `for (let i = 0; i < ${times}; i++) {\n${statements}}\n`;
 };
 
-CustomLang['servo_write'] = function (block: Blockly.Block) {
+CustomLang['servo_write'] = function(block) {
   const pin = block.getFieldValue('PIN');
   const angle = block.getFieldValue('ANGLE');
   return `myServo.attach(${pin});\nmyServo.write(${angle});\n`;
 };
 
-CustomLang['read_button'] = function (block: Blockly.Block) {
+CustomLang['read_button'] = function(block) {
   const pin = block.getFieldValue('PIN');
   return `digitalRead(${pin});\n`;
 };
 
-CustomLang['ultrasonic_read'] = function (block: Blockly.Block) {
+CustomLang['ultrasonic_read'] = function(block) {
   const trigPin = block.getFieldValue('TRIG');
   const echoPin = block.getFieldValue('ECHO');
   return `readUltrasonic(${trigPin}, ${echoPin});\n`;
 };
 
-CustomLang['temperature_read'] = function (block: Blockly.Block) {
+CustomLang['temperature_read'] = function(block) {
   const pin = block.getFieldValue('PIN');
   return `readTemperature(${pin});\n`;
 };

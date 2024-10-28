@@ -1,13 +1,12 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
-
 import 'blockly/blocks';
 import * as Blockly from 'blockly';
 import * as BlocklyMessages from 'blockly/msg/pt-br';
 import { PersistenceDbService } from '../../core/services/persistence_idb.service';
 import { TranspilerService } from '../../core/services/transpiler.service';
 import { getToolbox } from './toolbox-config';
-
 import './blocks';
+
 //nem trisca aqui nesse "erro"
 Blockly.setLocale(BlocklyMessages);
 

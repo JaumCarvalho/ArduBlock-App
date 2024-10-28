@@ -17,4 +17,3 @@ export class DynamicComponent implements OnDestroy {
     console.log('Só confirmando que foi de base');
   }
 }
-
