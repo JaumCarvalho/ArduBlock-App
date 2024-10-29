@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { ScreenOrientation } from '@capacitor/screen-orientation';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -12,4 +12,7 @@ export class AppComponent {
     { title: 'Programação', url: '/programming', icon: 'extension-puzzle' }
   ];  
   constructor() {}
+  async ngOnInit() {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+}
 }

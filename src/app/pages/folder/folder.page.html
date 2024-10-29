@@ -24,8 +24,8 @@
     <ng-container *ngFor="let component of components">
       <img 
         [src]="getComponentImage(component.type)" 
-        [style.left.px]="component.position?.x" 
-        [style.top.px]="component.position?.y" 
+        [style.left.px]="component.position.x" 
+        [style.top.px]="component.position.y" 
         alt="{{ component.type }}" 
         class="draggable-component" 
         (touchstart)="startDrag($event, component)" />

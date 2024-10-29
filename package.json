@@ -26,6 +26,7 @@
     "@capacitor/core": "6.1.0",
     "@capacitor/haptics": "6.0.0",
     "@capacitor/keyboard": "6.0.1",
+    "@capacitor/screen-orientation": "^6.0.2",
     "@capacitor/status-bar": "6.0.0",
     "@ionic/angular": "^8.3.1",
     "blockly": "^11.1.1",

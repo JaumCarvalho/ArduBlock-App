@@ -1,8 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild,
-  ViewContainerRef,
   AfterViewInit,
   ChangeDetectorRef,
 } from '@angular/core';
@@ -29,8 +27,6 @@ export class FolderPage implements OnInit, AfterViewInit {
   private activeComponent: any = null;
   private initialPosition: { x: number; y: number } = { x: 0, y: 0 };
 
-  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: false })
-  container!: ViewContainerRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
