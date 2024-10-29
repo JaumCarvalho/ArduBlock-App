@@ -11,6 +11,6 @@ import { CardComponentArduinoComponent } from './card-component-arduino.componen
     IonicModule
   ],
   declarations: [CardComponentArduinoComponent],
-  exports: [CardComponentArduinoComponent] // Exporte o componente se necessário
+  exports: [CardComponentArduinoComponent]
 })
 export class CardComponentArduinoModule {}

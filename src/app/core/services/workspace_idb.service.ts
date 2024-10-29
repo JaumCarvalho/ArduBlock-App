@@ -29,4 +29,10 @@ export class WorkspaceService {
     const db = await openDB(this.dbName, 1);
     return await db.getAll('components');
   }
+
+  async clearComponents() {
+    const db = await openDB(this.dbName, 1);
+    await db.clear('components');
+    console.log('Todos os componentes foram limpos.');
+  }
 }

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ folder }}</ion-title>
     <ion-text slot="end" class="ion-margin-end" *ngIf="isExecuting">
-     <h6>Tempo do simulador  {{formatTime(hours) }}:{{formatTime(minutes) }}:{{ formatTime(seconds) }}</h6>
+      <h6>Tempo do simulador  {{formatTime(hours) }}:{{formatTime(minutes) }}:{{ formatTime(seconds) }}</h6>
     </ion-text>
     <ion-button class="ion-margin-end" slot="end" (click)="toggleExecution()">
       {{ isExecuting ? 'Parar' : 'Executar' }}
@@ -19,10 +19,16 @@
       <ion-title size="large">{{ folder }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <div id="container">
-    <img alt="potenciometro" src="../../../assets/arduino-components/arduino.svg" />
-    <img alt="potenciometro" src="../../../assets/arduino-components/breadboard.svg" />
-    <ng-template #dynamicContainer></ng-template>
+
+  <div id="container" (touchmove)="move($event)" (touchend)="drop($event)" style="position: relative; height: 100%; border: 1px dashed #ccc;">
+    <ng-container *ngFor="let component of components">
+      <img 
+        [src]="getComponentImage(component.type)" 
+        [style.left.px]="component.position?.x" 
+        [style.top.px]="component.position?.y" 
+        alt="{{ component.type }}" 
+        class="draggable-component" 
+        (touchstart)="startDrag($event, component)" />
+    </ng-container>
   </div>
 </ion-content>

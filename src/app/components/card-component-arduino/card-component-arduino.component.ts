@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { WorkspaceService } from '../../core/services/workspace_idb.service'; // Ajuste o caminho conforme necessário
+import { WorkspaceService } from '../../core/services/workspace_idb.service';
 import { Led } from '../led/led.model';
 @Component({
   selector: 'app-card-component-arduino',
@@ -8,29 +8,28 @@ import { Led } from '../led/led.model';
   styleUrls: ['./card-component-arduino.component.scss'],
 })
 export class CardComponentArduinoComponent implements OnInit {
-  @Output() componentAdded = new EventEmitter<string>(); // Adicionando um EventEmitter
-
+  @Output() componentAdded = new EventEmitter<string>();
+  components = [
+    { type: 'LED', svg: '../../../assets/arduino-components/led.svg', label: 'Led' },
+    { type: 'Potenciômetro', svg: '../../../assets/arduino-components/potenciometro.svg', label: 'Potenciômetro' },
+    { type: 'Resistor', svg: '../../../assets/arduino-components/resistor.svg', label: 'Resistor' },
+    { type: 'Botao', svg: '../../../assets/arduino-components/botao.svg', label: 'Botão' },
+    { type: 'Servo', svg: '../../../assets/arduino-components/servomotor.svg', label: 'Servo Motor' },
+  ];
   constructor(private router: Router, private workspaceService: WorkspaceService) {}
 
   ngOnInit(): void {}
 
   addComponentToWorkspace(componentType: string): void {
     const componentData: Led = {
-      id: Date.now(), // Gera um ID único baseado na data e hora
+      id: Date.now(),
       type: componentType,
-      pin: 2, // Exemplo, pode ser um valor dinâmico
-      state: 'OFF' // Estado inicial do componente (por exemplo, LED)
+      pin: null,
+      state: 'OFF'
     };
   
-    // Salva o componente no banco de dados
     this.workspaceService.saveComponent(componentData);
   
-    // Navega para a página de execução
     this.router.navigate(['/folder', 'Executar'], { state: { item: componentData } });
-  }
-
-  // Método para chamar ao clicar no card
-  onCardClick(componentType: string) {
-    this.addComponentToWorkspace(componentType);
   }
 }

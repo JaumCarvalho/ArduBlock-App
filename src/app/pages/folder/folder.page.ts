@@ -1,8 +1,14 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DynamicComponent } from 'src/app/components/dynamic-component/dynamic-component.component';
-import { LedService } from '../../components/led/led.service'; // Importar o LedService
-import { WorkspaceService } from '../../core/services/workspace_idb.service'; // Importar o WorkspaceService
+import { LedService } from '../../components/led/led.service';
+import { WorkspaceService } from '../../core/services/workspace_idb.service';
 
 @Component({
   selector: 'app-folder',
@@ -11,91 +17,109 @@ import { WorkspaceService } from '../../core/services/workspace_idb.service'; //
 })
 export class FolderPage implements OnInit, AfterViewInit {
   public folder: string | null = null;
-  item: string | null = null;
-  private componentRef?: ComponentRef<DynamicComponent>;
-  public components: any[] = [];
   isExecuting = false;
   timer: any;
   hours: number = 0;
   minutes: number = 0;
   seconds: number = 0;
-  
-  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: false }) container!: ViewContainerRef;
+  components = [
+    { type: 'Arduino', pin: 13, position: { x: 0, y: 0 } },
+    { type: 'Breadboard', pin: 1, position: { x: 50, y: 50 } },
+  ];
+  private activeComponent: any = null;
+  private initialPosition: { x: number; y: number } = { x: 0, y: 0 };
+
+  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: false })
+  container!: ViewContainerRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private ledService: LedService, // Injeção do LedService
-    private workspaceService: WorkspaceService // Injeção do WorkspaceService
+    private ledService: LedService,
+    private workspaceService: WorkspaceService
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(params => {
+    this.activatedRoute.paramMap.subscribe((params) => {
       this.folder = params.get('id');
     });
-
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation && navigation.extras && navigation.extras.state && navigation.extras.state['item']) {
-      this.item = navigation.extras.state['item'];
-    }
   }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
-    if (this.item) {
-      this.createDynamicComponent();
-    }
   }
 
-  createDynamicComponent() {
-    if (this.container) {
-      this.container.clear();
-      this.componentRef = this.container.createComponent(DynamicComponent);
-      this.componentRef.instance.data = this.item;
-
-      this.componentRef.instance.destroy.subscribe(() => {
-        this.destroyDynamicComponent();
-      });
-
-      console.log('Componente criado');
-    } else {
-      console.error('Container não encontrado');
-    }
+  startDrag(event: TouchEvent, component: any) {
+    this.activeComponent = component;
+    this.initialPosition = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+    console.log('Dragging started', this.initialPosition);
   }
-
-  destroyDynamicComponent() {
-    if (this.componentRef) {
-      console.log('Componente destruído');
-      this.componentRef.destroy();
+  
+  move(event: TouchEvent) {
+    if (!this.activeComponent || !this.initialPosition) {
+      console.log('Move event ignored: activeComponent or initialPosition is undefined');
+      return;
     }
-  }
-
-  // Método para adicionar um componente à área de execução
-  addComponent(componentData: any) {
-    this.components.push(componentData);
-    this.workspaceService.saveComponent(componentData); // Persistir o componente no IndexedDB
+  
+    const deltaX = event.touches[0].clientX - this.initialPosition.x;
+    const deltaY = event.touches[0].clientY - this.initialPosition.y;
+  
+    console.log('Moving component', this.activeComponent, 'Delta:', { deltaX, deltaY });
+    
+    this.activeComponent.position.x += deltaX;
+    this.activeComponent.position.y += deltaY;
+  
+    this.initialPosition = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+  
     this.cdr.detectChanges();
   }
 
-  // Método para controlar LEDs na execução
+  drop(event: TouchEvent) {
+    if (!this.activeComponent) return;
+
+    this.addComponent(this.activeComponent, this.activeComponent.position);
+    this.activeComponent = null;
+  }
+
+  addComponent(componentData: any, position: { x: number; y: number }) {
+    const componentWithPosition = { ...componentData, position };
+    this.components.push(componentWithPosition);
+    this.cdr.detectChanges();
+  }
+
+  getComponentImage(type: string): string {
+    switch (type) {
+      case 'Arduino':
+        return '../../../assets/arduino-components/arduino.svg';
+      case 'Breadboard':
+        return '../../../assets/arduino-components/breadboard.svg';
+      default:
+        return '';
+    }
+  }
+
   executeProject() {
     console.log('Executando projeto...');
-    this.components.forEach(component => {
+    this.components.forEach((component) => {
       if (component.type === 'LED') {
-        this.ledService.turnOn(component.pin); // Ligar o LED
+        this.ledService.turnOn(component.pin);
       }
-      // Adicionar lógica para outros componentes, se necessário
     });
   }
 
   stopProject() {
     console.log('Projeto parado.');
-    this.components.forEach(component => {
+    this.components.forEach((component) => {
       if (component.type === 'LED') {
-        this.ledService.turnOff(component.pin); // Desligar o LED
+        this.ledService.turnOff(component.pin);
       }
-      // Adicionar lógica para parar outros componentes, se necessário
     });
   }
 
