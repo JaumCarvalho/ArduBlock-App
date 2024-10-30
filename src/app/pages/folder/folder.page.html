@@ -19,14 +19,15 @@
       <ion-title size="large">{{ folder }}</ion-title>
     </ion-toolbar>
   </ion-header>
-
+<!-- container da área de execução onde os componentes são inseridos/deletados/alterados -->
   <div id="container" (click)="deselectAllComponents()" (touchmove)="move($event)" (touchend)="drop($event)" style="position: relative;">
-    <ng-container *ngFor="let component of components">
+    <!-- renderiza todos os componentes -->
+    <ng-container *ngFor="let component of components; trackBy: trackById">
       <div>
       <img 
         [src]="getComponentImage(component.type)" 
         [style.left.px]="component.position.x" 
-        [style.top.px]="component.position.y" 
+        [style.top.px]="component.position.y"
         [ngClass]="{
           'led-small': component.type === 'LED',
           'servo-small': component.type === 'Servo',
@@ -43,6 +44,7 @@
         (click)="selectedComponent(component); $event.stopPropagation()"
         style="pointer-events: bounding-box;" />
         <div *ngIf="component.isSelected" class="button-container">
+          <!-- botões de confimar e cancelar ao manipular os componentes -->
           <ion-button color="success" (click)="confirmPosition(component)"><ion-icon name="checkmark-circle"></ion-icon></ion-button>
           <ion-button color="danger" (click)="deleteComponent(component)"><ion-icon name="trash-bin"></ion-icon></ion-button>
         </div>

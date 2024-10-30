@@ -35,4 +35,10 @@ export class WorkspaceService {
     await db.clear('components');
     console.log('Todos os componentes foram limpos.');
   }
+
+  async deleteComponentById(id: number): Promise<void> {
+    const db = await openDB(this.dbName, 1);
+    await db.delete('components', id);
+    console.log(`Componente com id ${id} deletado do workspaceDb.`);
+  }
 }

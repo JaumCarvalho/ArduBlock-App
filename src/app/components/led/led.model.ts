@@ -3,4 +3,5 @@ export interface Led {
   type: string;
   pin: any;
   state: string;
+  position: {x: number, y: number}
 }

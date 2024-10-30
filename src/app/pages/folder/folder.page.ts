@@ -15,62 +15,124 @@ import { WorkspaceService } from '../../core/services/workspace_idb.service';
 })
 export class FolderPage implements OnInit, AfterViewInit {
   public folder: string | null = null;
+
+  // variáveis do contador do simulador
   isExecuting = false;
   timer: any;
   hours: number = 0;
   minutes: number = 0;
   seconds: number = 0;
+
+  // array dos componentes contidos na área de execução/workspace
   components = [
-    { type: 'Arduino', pin: 0, position: { x: 0, y: 0 }, isSelected: false },
-    { type: 'Breadboard', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
-    { type: 'Botao', pin: 0, position: { x: 45, y: 50 }, isSelected: false },
-    { type: 'Resistor', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
-    { type: 'Potenciometro', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
-    { type: 'LED', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
-    { type: 'Servo', pin: 0, position: { x: 50, y: 50 }, isSelected: false }
+    {
+      id: 1,
+      type: 'Arduino',
+      pin: 0,
+      position: { x: 46, y: 28 },
+      isSelected: false,
+    },
+    {
+      id: 2,
+      type: 'Breadboard',
+      pin: 0,
+      position: { x: 372, y: -22 },
+      isSelected: false,
+    },
   ];
+ 
   private activeComponent: any = null;
   private initialPosition: { x: number; y: number } = { x: 0, y: 0 };
 
   constructor(
+    private workspaceService: WorkspaceService,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private ledService: LedService,
+    private ledService: LedService
   ) {}
 
   ngOnInit() {
+    console.log(this.components);
     this.activatedRoute.paramMap.subscribe((params) => {
-      this.folder = params.get('id');
+        this.folder = params.get('id');
     });
+    this.loadComponents();
+    const componentData = history.state.item;
+    if (componentData) {
+        const componentWithPosition = {
+            ...componentData,
+            position: { x: 280, y: 100 },
+        };
+        this.addComponent(componentWithPosition, componentWithPosition.position);
+    }
+}
+
+  async loadComponents() {
+    try {
+      this.components = await this.workspaceService.getAllComponents();
+      console.log('Componentes carregados:', this.components);
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Erro ao carregar componentes do workspaceDB:', error);
+    }
   }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
   }
+
   confirmPosition(component: any) {
     console.log('Posição confirmada para', component);
-    // Aqui você pode implementar a lógica que deseja para confirmar a posição
   }
+
+  trackById(index: number, component: any): number {
+    return component.id;
+  }
+
+  // lógica para deletar um componente do arduino que doi inserido em workspace
+  // deve ser excluído de WorkspaceDB também
   deleteComponent(component: any) {
-    const index = this.components.indexOf(component);
+    console.log('Tentando deletar componente:', component);
+
+    // localiza o índice do componente no array local e remove se existir
+    const index = this.components.findIndex((comp) => comp.id === component.id);
     if (index > -1) {
       this.components.splice(index, 1);
-      this.cdr.detectChanges();
+      console.log('Componente deletado com sucesso:', component);
+
+      // chama o WorkspaceService para excluir o componente no workspaceDB
+      this.workspaceService
+        .deleteComponentById(component.id)
+        .then(() => {
+          console.log('Componente deletado do workspaceDB:', component.id);
+          this.cdr.detectChanges();
+        })
+        .catch((error) => {
+          console.error('Erro ao deletar componente do workspaceDB:', error);
+        });
+    } else {
+      console.error('Componente não encontrado na lista:', component);
     }
+
+    this.cdr.markForCheck();
   }
-  selectedComponent(component: any){
+
+  // lógica de seleção de componente para torná-lo arrastável
+  selectedComponent(component: any) {
     this.deselectAllComponents();
     component.isSelected = true;
     this.activeComponent = component;
   }
 
+  // lógica para cancelar a seleção
   deselectAllComponents() {
-    this.components.forEach(comp => comp.isSelected = false);
+    this.components.forEach((comp) => (comp.isSelected = false));
     this.activeComponent = null;
-  }  
+  }
 
+  // função para verificar de onde o componente foi arrastado, a posição inicial
   startDrag(event: TouchEvent, component: any) {
-    if (!component.isSelected) return;
+    if (!component.isSelected) return; // early return caso o componente não esteja selecionado/ativado antes
     this.activeComponent = component;
     this.initialPosition = {
       x: event.touches[0].clientX,
@@ -79,7 +141,9 @@ export class FolderPage implements OnInit, AfterViewInit {
     console.log('Dragging started', this.initialPosition);
   }
 
+  // função para mover o componente selecionado
   move(event: TouchEvent) {
+    // se o elemento não estiver ativo/selecionado ou nem tiver uma posição inicial ele não move
     if (!this.activeComponent || !this.initialPosition) {
       console.log(
         'Move event ignored: activeComponent or initialPosition is undefined'
@@ -87,6 +151,7 @@ export class FolderPage implements OnInit, AfterViewInit {
       return;
     }
 
+    // armazena a posição do componente e mostra em tempo de execução as coordenadas
     const deltaX = event.touches[0].clientX - this.initialPosition.x;
     const deltaY = event.touches[0].clientY - this.initialPosition.y;
 
@@ -106,19 +171,57 @@ export class FolderPage implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
+  // função para soltar o componente do click
   drop(event: TouchEvent) {
     if (!this.activeComponent) return;
-
+    // adiciona o componente e atualiza a posição
     this.addComponent(this.activeComponent, this.activeComponent.position);
+
+    // salva a posição atualizada no workspaceDB
+    this.workspaceService
+      .saveComponent(this.activeComponent)
+      .then(() =>
+        console.log(
+          'Posição do componente atualizada no workspaceDB:',
+          this.activeComponent
+        )
+      )
+      .catch((error) =>
+        console.error('Erro ao atualizar posição no workspaceDB:', error)
+      );
+
     this.activeComponent = null;
   }
 
   addComponent(componentData: any, position: { x: number; y: number }) {
-    const componentWithPosition = { ...componentData, position };
-    this.components.push(componentWithPosition);
-    this.cdr.detectChanges();
-  }
+    // verifica se o componente já existe no array pelo id
+    const exists = this.components.some((comp) => comp.id === componentData.id);
 
+    if (!exists) {
+        const componentWithPosition = { ...componentData, position };
+        this.components.push(componentWithPosition);
+        // salva o novo componente no workspaceDB
+        this.workspaceService
+            .saveComponent(componentWithPosition)
+            .then(() => {
+                console.log('Componente salvo no workspaceDB:', componentWithPosition);
+                // Seleciona o componente recém-adicionado
+                this.selectedComponent(componentWithPosition);
+            })
+            .catch((error) =>
+                console.error('Erro ao salvar componente no workspaceDB:', error)
+            );
+        this.cdr.detectChanges();
+    } else {
+        console.warn(
+            'Componente já existe no array, não foi adicionado novamente:',
+            componentData
+        );
+    }
+}
+
+
+  // função para pegar a url do svg com base no tipo do componente
   getComponentImage(type: string): string {
     switch (type) {
       case 'Arduino':
@@ -139,6 +242,8 @@ export class FolderPage implements OnInit, AfterViewInit {
         return '';
     }
   }
+
+  /* funções do contador do simulador */
 
   executeProject() {
     console.log('Executando projeto...');

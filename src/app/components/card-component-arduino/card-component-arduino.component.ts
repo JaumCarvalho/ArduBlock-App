@@ -11,10 +11,12 @@ export class CardComponentArduinoComponent implements OnInit {
   @Output() componentAdded = new EventEmitter<string>();
   components = [
     { type: 'LED', svg: '../../../assets/arduino-components/led.svg', label: 'Led' },
-    { type: 'Potenciômetro', svg: '../../../assets/arduino-components/potenciometro.svg', label: 'Potenciômetro' },
+    { type: 'Potenciometro', svg: '../../../assets/arduino-components/potenciometro.svg', label: 'Potenciômetro' },
     { type: 'Resistor', svg: '../../../assets/arduino-components/resistor.svg', label: 'Resistor' },
     { type: 'Botao', svg: '../../../assets/arduino-components/botao.svg', label: 'Botão' },
     { type: 'Servo', svg: '../../../assets/arduino-components/servomotor.svg', label: 'Servo Motor' },
+    { type: 'Arduino', svg: '../../../assets/arduino-components/arduino.svg', label: 'Arduino' },
+    { type: 'Breadboard', svg: '../../../assets/arduino-components/breadboard.svg', label: 'Breadboard' }
   ];
   constructor(private router: Router, private workspaceService: WorkspaceService) {}
 
@@ -25,7 +27,8 @@ export class CardComponentArduinoComponent implements OnInit {
       id: Date.now(),
       type: componentType,
       pin: null,
-      state: 'OFF'
+      state: 'OFF',
+      position: {x: 324, y: 122}
     };
   
     this.workspaceService.saveComponent(componentData);
