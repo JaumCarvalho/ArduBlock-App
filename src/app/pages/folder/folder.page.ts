@@ -21,12 +21,16 @@ export class FolderPage implements OnInit, AfterViewInit {
   minutes: number = 0;
   seconds: number = 0;
   components = [
-    { type: 'Arduino', pin: 13, position: { x: 0, y: 0 } },
-    { type: 'Breadboard', pin: 1, position: { x: 50, y: 50 } },
+    { type: 'Arduino', pin: 0, position: { x: 0, y: 0 }, isSelected: false },
+    { type: 'Breadboard', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
+    { type: 'Botao', pin: 0, position: { x: 45, y: 50 }, isSelected: false },
+    { type: 'Resistor', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
+    { type: 'Potenciometro', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
+    { type: 'LED', pin: 0, position: { x: 50, y: 50 }, isSelected: false },
+    { type: 'Servo', pin: 0, position: { x: 50, y: 50 }, isSelected: false }
   ];
   private activeComponent: any = null;
   private initialPosition: { x: number; y: number } = { x: 0, y: 0 };
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,7 +50,19 @@ export class FolderPage implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
+  selectedComponent(component: any){
+    this.deselectAllComponents();
+    component.isSelected = true;
+    this.activeComponent = component;
+  }
+
+  deselectAllComponents() {
+    this.components.forEach(comp => comp.isSelected = false);
+    this.activeComponent = null;
+  }  
+
   startDrag(event: TouchEvent, component: any) {
+    if (!component.isSelected) return;
     this.activeComponent = component;
     this.initialPosition = {
       x: event.touches[0].clientX,
@@ -54,26 +70,31 @@ export class FolderPage implements OnInit, AfterViewInit {
     };
     console.log('Dragging started', this.initialPosition);
   }
-  
+
   move(event: TouchEvent) {
     if (!this.activeComponent || !this.initialPosition) {
-      console.log('Move event ignored: activeComponent or initialPosition is undefined');
+      console.log(
+        'Move event ignored: activeComponent or initialPosition is undefined'
+      );
       return;
     }
-  
+
     const deltaX = event.touches[0].clientX - this.initialPosition.x;
     const deltaY = event.touches[0].clientY - this.initialPosition.y;
-  
-    console.log('Moving component', this.activeComponent, 'Delta:', { deltaX, deltaY });
-    
+
+    console.log('Moving component', this.activeComponent, 'Delta:', {
+      deltaX,
+      deltaY,
+    });
+
     this.activeComponent.position.x += deltaX;
     this.activeComponent.position.y += deltaY;
-  
+
     this.initialPosition = {
       x: event.touches[0].clientX,
       y: event.touches[0].clientY,
     };
-  
+
     this.cdr.detectChanges();
   }
 
@@ -96,6 +117,16 @@ export class FolderPage implements OnInit, AfterViewInit {
         return '../../../assets/arduino-components/arduino.svg';
       case 'Breadboard':
         return '../../../assets/arduino-components/breadboard.svg';
+      case 'LED':
+        return '../../../assets/arduino-components/led.svg';
+      case 'Resistor':
+        return '../../../assets/arduino-components/resistor.svg';
+      case 'Potenciometro':
+        return '../../../assets/arduino-components/potenciometro.svg';
+      case 'Botao':
+        return '../../../assets/arduino-components/botao.svg';
+      case 'Servo':
+        return '../../../assets/arduino-components/servomotor.svg';
       default:
         return '';
     }
