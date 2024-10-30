@@ -34,10 +34,8 @@ export class FolderPage implements OnInit, AfterViewInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private cdr: ChangeDetectorRef,
     private ledService: LedService,
-    private workspaceService: WorkspaceService
   ) {}
 
   ngOnInit() {
@@ -49,7 +47,17 @@ export class FolderPage implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.cdr.detectChanges();
   }
-
+  confirmPosition(component: any) {
+    console.log('Posição confirmada para', component);
+    // Aqui você pode implementar a lógica que deseja para confirmar a posição
+  }
+  deleteComponent(component: any) {
+    const index = this.components.indexOf(component);
+    if (index > -1) {
+      this.components.splice(index, 1);
+      this.cdr.detectChanges();
+    }
+  }
   selectedComponent(component: any){
     this.deselectAllComponents();
     component.isSelected = true;

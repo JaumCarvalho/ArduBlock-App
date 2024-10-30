@@ -20,8 +20,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container" (click)="deselectAllComponents()" (touchmove)="move($event)" (touchend)="drop($event)" style="position: relative; height: 100%; border: 1px dashed #ccc;">
+  <div id="container" (click)="deselectAllComponents()" (touchmove)="move($event)" (touchend)="drop($event)" style="position: relative;">
     <ng-container *ngFor="let component of components">
+      <div>
       <img 
         [src]="getComponentImage(component.type)" 
         [style.left.px]="component.position.x" 
@@ -39,7 +40,14 @@
         alt="{{ component.type }}" 
         class="draggable-component" 
         (touchstart)="startDrag($event, component)"
-        (click)="selectedComponent(component); $event.stopPropagation()" />
+        (click)="selectedComponent(component); $event.stopPropagation()"
+        style="pointer-events: bounding-box;" />
+        <div *ngIf="component.isSelected" class="button-container">
+          <ion-button color="success" (click)="confirmPosition(component)"><ion-icon name="checkmark-circle"></ion-icon></ion-button>
+          <ion-button color="danger" (click)="deleteComponent(component)"><ion-icon name="trash-bin"></ion-icon></ion-button>
+        </div>
+      </div>
     </ng-container>
   </div>
 </ion-content>
+

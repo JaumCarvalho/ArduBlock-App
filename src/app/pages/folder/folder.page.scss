@@ -3,7 +3,7 @@ ion-menu-button {
 }
 
 #container {
-  width: 100%;
+  width: 1000px;
   height: 1000px; 
   position: relative;
   border: 1px dashed #ccc;
@@ -61,4 +61,18 @@ img {
   filter: drop-shadow(0 0 4px rgba(0, 0, 255, 0.6));
   pointer-events: bounding-box;
   z-index: 10;
+}
+
+.button-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  top: 230px;
+  left: 300px; 
+  z-index: 50;
+}
+
+.button-container ion-button {
+  margin-top: 5px;
 }
