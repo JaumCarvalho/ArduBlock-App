@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { Led } from './led.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,6 +8,18 @@ export class LedService {
   private ledState: { [key: number]: boolean } = {};
 
   constructor() {}
+  createLed(): Led{
+    return {
+      id: Date.now(),
+      type: 'LED',
+      pins: {
+        catodo: { pinState: 'OFF', pinConn: '' },
+        anodo: { pinState: 'OFF', pinConn: '' },
+      },
+      state: 'OFF',
+      position: { x: 324, y: 122 },
+    };
+  }
   turnOn(pin: number): void {
     this.ledState[pin] = true;
     this.sendCommand(pin, 'ON');
@@ -30,14 +42,5 @@ export class LedService {
   addLed(pin: number) {
     console.log(`LED adicionado no pino ${pin}`);
   }
-
-  addPotenciometro(pin: number) {
-    console.log(`Potenciômetro adicionado no pino ${pin}`);
-    // Lógica para adicionar o Potenciômetro
-  }
-
-  addResistor(value: number) {
-    console.log(`Resistor de ${value} Ohms adicionado`);
-    // Lógica para adicionar o Resistor
-  }
+  
 }

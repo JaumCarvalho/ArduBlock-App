@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LedService} from '../../components/led/led.service'
+import {LedService} from '../../models/led/led.service'
 @Component({
   selector: 'app-arduino-components',
   templateUrl: './arduino-components.page.html',

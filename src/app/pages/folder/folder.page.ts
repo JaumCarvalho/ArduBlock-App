@@ -5,7 +5,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LedService } from '../../components/led/led.service';
+import { LedService } from '../../models/led/led.service';
 import { WorkspaceService } from '../../core/services/workspace_idb.service';
 
 @Component({
@@ -24,23 +24,8 @@ export class FolderPage implements OnInit, AfterViewInit {
   seconds: number = 0;
 
   // array dos componentes contidos na área de execução/workspace
-  components = [
-    {
-      id: 1,
-      type: 'Arduino',
-      pin: 0,
-      position: { x: 46, y: 28 },
-      isSelected: false,
-    },
-    {
-      id: 2,
-      type: 'Breadboard',
-      pin: 0,
-      position: { x: 372, y: -22 },
-      isSelected: false,
-    },
-  ];
- 
+  components: any[] = [];
+
   private activeComponent: any = null;
   private initialPosition: { x: number; y: number } = { x: 0, y: 0 };
 
@@ -52,26 +37,30 @@ export class FolderPage implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.components);
     this.activatedRoute.paramMap.subscribe((params) => {
-        this.folder = params.get('id');
+      this.folder = params.get('id');
+      this.loadComponents();
     });
     this.loadComponents();
+
+    // recebe os dados da rota de card-component-arduino.component.ts
     const componentData = history.state.item;
     if (componentData) {
-        const componentWithPosition = {
-            ...componentData,
-            position: { x: 280, y: 100 },
-        };
-        this.addComponent(componentWithPosition, componentWithPosition.position);
+      const componentWithPosition = {
+        ...componentData,
+        position: { x: 280, y: 100 },
+      };
+      this.addComponent(componentWithPosition, componentWithPosition.position);
     }
-}
+  }
 
+  // carrega os componentes de workspaceIDB
   async loadComponents() {
     try {
       this.components = await this.workspaceService.getAllComponents();
       console.log('Componentes carregados:', this.components);
       this.cdr.detectChanges();
+      this.deselectAllComponents();
     } catch (error) {
       console.error('Erro ao carregar componentes do workspaceDB:', error);
     }
@@ -198,28 +187,30 @@ export class FolderPage implements OnInit, AfterViewInit {
     const exists = this.components.some((comp) => comp.id === componentData.id);
 
     if (!exists) {
-        const componentWithPosition = { ...componentData, position };
-        this.components.push(componentWithPosition);
-        // salva o novo componente no workspaceDB
-        this.workspaceService
-            .saveComponent(componentWithPosition)
-            .then(() => {
-                console.log('Componente salvo no workspaceDB:', componentWithPosition);
-                // Seleciona o componente recém-adicionado
-                this.selectedComponent(componentWithPosition);
-            })
-            .catch((error) =>
-                console.error('Erro ao salvar componente no workspaceDB:', error)
-            );
-        this.cdr.detectChanges();
-    } else {
-        console.warn(
-            'Componente já existe no array, não foi adicionado novamente:',
-            componentData
+      const componentWithPosition = { ...componentData, position };
+      this.components.push(componentWithPosition);
+      // salva o novo componente no workspaceDB
+      this.workspaceService
+        .saveComponent(componentWithPosition)
+        .then(() => {
+          console.log(
+            'Componente salvo no workspaceDB:',
+            componentWithPosition
+          );
+          // seleciona o componente que acabou de ser adicionado
+          this.selectedComponent(componentWithPosition);
+        })
+        .catch((error) =>
+          console.error('Erro ao salvar componente no workspaceDB:', error)
         );
+      this.cdr.detectChanges();
+    } else {
+      console.warn(
+        'Componente já existe no array, não foi adicionado novamente:',
+        componentData
+      );
     }
-}
-
+  }
 
   // função para pegar a url do svg com base no tipo do componente
   getComponentImage(type: string): string {
