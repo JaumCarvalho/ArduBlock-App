@@ -4,7 +4,8 @@ import { ButtonService } from '../../models/button/button.service';
 import { ResistorService } from '../../models/resistor/resistor.service';
 import { PotenciometroService } from '../../models/potenciometro/potenciometro.service';
 import { ArduinoService } from '../../models/arduino/arduino.service';
-import { BreadboardService } from 'src/app/models/breadboard/breadboard.service';
+import { BreadboardService } from '../../models/breadboard/breadboard.service';
+import { ServoService } from '../../models/servo/servo.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,6 +15,7 @@ export class CreateComponentService {
     private resistorService: ResistorService,
     private potenciometroService: PotenciometroService,
     private buttonService: ButtonService,
+    private servoService: ServoService,
     private arduinoService: ArduinoService,
     private breadboardService: BreadboardService
   ) {}
@@ -68,6 +70,9 @@ export class CreateComponentService {
 
       case 'Botao':
         return this.buttonService.createButton();
+
+      case 'Servo':
+        return this.servoService.createServo();
 
       case 'Potenciometro':
         return this.potenciometroService.createPotenciometro();
