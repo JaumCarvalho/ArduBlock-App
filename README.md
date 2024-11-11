@@ -1,7 +1,7 @@
 
 # ArduBlock-App
 
-ArduBlock-App é um aplicativo web para ensino de programação em Arduino utilizando uma interface de programação em blocos. Este projeto foi desenvolvido para facilitar o aprendizado de conceitos de eletrônica e programação em Arduino.
+ArduBlock-App é um aplicativo mobile para ensino de programação em Arduino utilizando uma interface de programação em blocos. Este projeto foi desenvolvido para facilitar o aprendizado de conceitos de eletrônica e programação em Arduino.
 
 ## Pré-requisitos
 
